@@ -67,7 +67,7 @@ PREINSTALLED_PACKAGES+=" kmod-usb-storage-extras kmod-mmc"
 PREINSTALLED_PACKAGES+=" ppp ppp-mod-pppoe ppp-mod-pppol2tp ppp-mod-pptp kmod-ppp kmod-pppoe"
 PREINSTALLED_PACKAGES+=" luci"
 
-mkdir -pv ${BUILD}
+mkdir --parents ${BUILD}
 
 rm -rf $IMGTEMPDIR
 cp -r image-extras/common/ $IMGTEMPDIR
