@@ -26,21 +26,21 @@ BUILD=`absolutize $BUILD`
 ### chose a release
 ###
 RELEASE_NAME="chaos_calmer"
-RELEASE="15.05"
+RELEASE="17.01.0"
 
 #RELEASE_NAME="snapshots"
 #RELEASE="trunk"
 
 if [ $RELEASE = "trunk" ]; then
-    IMGBUILDER_NAME="OpenWrt-ImageBuilder-${TARGET_ARCHITECTURE}-${TARGET_VARIANT}.Linux-x86_64"
+    IMGBUILDER_NAME="lede-imagebuilder-${TARGET_ARCHITECTURE}-${TARGET_VARIANT}.Linux-x86_64"
 else
-    IMGBUILDER_NAME="OpenWrt-ImageBuilder-${RELEASE}-${TARGET_ARCHITECTURE}-${TARGET_VARIANT}.Linux-x86_64"
+    IMGBUILDER_NAME="lede-imagebuilder-${RELEASE}-${TARGET_ARCHITECTURE}-${TARGET_VARIANT}.Linux-x86_64"
 fi
 IMGBUILDER_DIR="${BUILD}/${IMGBUILDER_NAME}"
-IMGBUILDER_ARCHIVE="${IMGBUILDER_NAME}.tar.bz2"
+IMGBUILDER_ARCHIVE="${IMGBUILDER_NAME}.tar.xz"
 
 IMGTEMPDIR="${BUILD}/openwrt-build-image-extras"
-IMGBUILDERURL="https://downloads.openwrt.org/${RELEASE_NAME}/${RELEASE}/${TARGET_ARCHITECTURE}/${TARGET_VARIANT}/${IMGBUILDER_ARCHIVE}"
+IMGBUILDERURL="https://downloads.lede-project.org/releases/${RELEASE}/targets/${TARGET_ARCHITECTURE}/${TARGET_VARIANT}/${IMGBUILDER_ARCHIVE}"
 
 if [ -z ${TARGET_DEVICE} ]; then
     echo "Usage: $0 architecture variant device-profile"
@@ -80,7 +80,7 @@ if [ ! -e ${IMGBUILDER_DIR} ]; then
     pushd ${BUILD}
     # --no-check-certificate if needed
     wget  --continue ${IMGBUILDERURL}
-    tar jvxf ${IMGBUILDER_ARCHIVE}
+    tar Jvxf ${IMGBUILDER_ARCHIVE}
     popd
 fi
 
@@ -88,8 +88,8 @@ pushd ${IMGBUILDER_DIR}
 
 make image PROFILE=${TARGET_DEVICE} PACKAGES="${PREINSTALLED_PACKAGES}" FILES=${IMGTEMPDIR}
 
-pushd bin/${TARGET_ARCHITECTURE}/
-ln -s ../../packages .
+pushd bin/targets/${TARGET_ARCHITECTURE}/
+ln -s ../../../packages .
 popd
 
 popd
